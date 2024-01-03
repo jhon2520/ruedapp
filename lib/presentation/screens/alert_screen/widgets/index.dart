@@ -1,0 +1,1 @@
+export 'card_alert_screen_widget.dart';
