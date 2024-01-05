@@ -4,25 +4,32 @@ import 'package:ruedapp/config/app_colors/app_colors.dart';
 import 'package:ruedapp/presentation/utils/index.dart';
 
 class TextWidget extends StatelessWidget {
-
   final String label;
   final FontSizesEnum fontSizesEnum;
   final Color? fontColor;
+  final bool isSelectable;
 
-  const TextWidget(this.label, {
-    super.key,
-    required this.fontSizesEnum,
-    this.fontColor,
-    });
+  const TextWidget(this.label,
+      {super.key,
+      required this.fontSizesEnum,
+      this.fontColor,
+      this.isSelectable = false});
 
   @override
   Widget build(BuildContext context) {
-    return SelectableText(
+    if (isSelectable) {
+      return SelectableText(
+        label,
+        style: GoogleFonts.poppins(
+            fontSize: fontSizesEnum.size,
+            color: fontColor ?? AppColors.darkBlueMainColor),
+      );
+    }
+    return Text(
       label,
       style: GoogleFonts.poppins(
-        fontSize: fontSizesEnum.size,
-        color: fontColor ?? AppColors.darkBlueMainColor
-      ),
+          fontSize: fontSizesEnum.size,
+          color: fontColor ?? AppColors.darkBlueMainColor),
     );
   }
 }

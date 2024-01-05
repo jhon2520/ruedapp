@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:ruedapp/config/index.dart' 
   show AppColors, AppStrings;
+import 'package:ruedapp/presentation/blocs/index.dart';
 import 'package:ruedapp/presentation/share/index.dart'
   show HomeDrawerWidget, IconButtonWidget, TextWidget;
 import 'package:ruedapp/presentation/utils/index.dart' 
-  show FontSizesEnum;
+  show FontSizesEnum, NumberFormatsUtils;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,34 +32,39 @@ class CounterKMWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final Size size = MediaQuery.of(context).size;
+    print("rebuild");
 
     return Container(
-      // height: size.height * 0.2,
-      color: Colors.red,
+      // color: Colors.red,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
+          Stack(
             children: [
-              Container(
-                color: Colors.green,
-                height: size.height * 0.1,
-                child: Text(
-                  "000000",
-                  style: GoogleFonts.poppins(
-                      fontSize: 56, color: AppColors.darkPurpleMainColor),
-                ),
+              Builder(
+                builder: (context) {
+
+                  return TextWidget(
+                    context.select((HomeScreenBloc value) => value.state.counterKM ?? "0"),
+                    fontSizesEnum: FontSizesEnum.bigTitle,
+                  
+                  );
+                }
               ),
-              Container(
-                // height: double.infinity,
-                color: Colors.yellow,
-                child: Text("km", style: GoogleFonts.poppins(),)),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  // height: double.infinity,
+                  // color: Colors.yellow,
+                  child: TextWidget("km", fontSizesEnum: FontSizesEnum.h3,)),
+              ),
             ],
           ),
-          IconButtonWidget(onPressed: () {}, iconData: Icons.mode_edit_outline_rounded)
+          IconButtonWidget(onPressed: () {
+            print("cambio");
+            context.read<HomeScreenBloc>().add(ChangeCounterKMEvent("2001"));
+          }, iconData: Icons.mode_edit_outline_rounded)
         ],
       ),
     );
